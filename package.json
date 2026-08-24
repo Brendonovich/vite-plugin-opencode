@@ -1,5 +1,5 @@
 {
-  "name": "vite-plugin-opencode",
+  "name": "@brendonovich/vite-plugin-opencode",
   "version": "0.1.0",
   "description": "Select UI elements in a Vite app and send contextual feedback to OpenCode.",
   "type": "module",

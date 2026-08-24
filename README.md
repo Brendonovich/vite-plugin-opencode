@@ -1,4 +1,4 @@
-# vite-plugin-opencode
+# @brendonovich/vite-plugin-opencode
 
 Select elements in a Vite app and send source-aware UI feedback directly to
 [OpenCode](https://opencode.ai/).
@@ -10,14 +10,14 @@ the selected source file.
 ## Install
 
 ```sh
-pnpm add -D vite-plugin-opencode
+pnpm add -D @brendonovich/vite-plugin-opencode
 ```
 
 ## Usage
 
 ```ts
 import { defineConfig } from "vite";
-import opencode from "vite-plugin-opencode";
+import opencode from "@brendonovich/vite-plugin-opencode";
 
 export default defineConfig({
   plugins: [opencode()],
