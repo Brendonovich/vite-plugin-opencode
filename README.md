@@ -20,11 +20,7 @@ import { defineConfig } from "vite";
 import opencode from "vite-plugin-opencode";
 
 export default defineConfig({
-  plugins: [
-    opencode({
-      skills: ["solidjs"],
-    }),
-  ],
+  plugins: [opencode()],
 });
 ```
 
