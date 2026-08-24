@@ -1,0 +1,54 @@
+{
+  "name": "vite-plugin-opencode",
+  "version": "0.1.0",
+  "description": "Select UI elements in a Vite app and send contextual feedback to OpenCode.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.json --emitDeclarationOnly",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "pnpm build"
+  },
+  "keywords": [
+    "vite",
+    "opencode",
+    "ai",
+    "ui",
+    "feedback"
+  ],
+  "author": "Brendonovich",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brendonovich/vite-plugin-opencode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brendonovich/vite-plugin-opencode/issues"
+  },
+  "homepage": "https://github.com/brendonovich/vite-plugin-opencode#readme",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@babel/core": "^7.29.0",
+    "@opencode-ai/client": "0.0.0-beta-18050"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0",
+    "vite": "^8.0.0"
+  },
+  "peerDependencies": {
+    "vite": "^6.0.0 || ^7.0.0 || ^8.0.0"
+  },
+  "packageManager": "pnpm@9.15.6"
+}

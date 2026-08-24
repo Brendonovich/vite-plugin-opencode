@@ -1,0 +1,4 @@
+html.vite-opencode-picker-active,
+html.vite-opencode-picker-active * {
+  cursor: none !important;
+}

@@ -1,0 +1,11 @@
+<div id="picker-cursor"></div>
+<div id="outline"></div>
+<div id="dialog">
+  <form>
+    <textarea required autofocus placeholder="What should change about this element?"></textarea>
+    <div class="composer-actions"><div class="composer-controls"><button id="mode-trigger" type="button" data-mode="direct" aria-label="Request mode" aria-pressed="false">Direct</button><button id="model-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span id="model-trigger-label">Default model</span><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div><button id="send" type="submit" title="Send to OpenCode (Cmd/Ctrl+Enter)">Submit</button></div>
+    <div id="model-menu"><input id="model-search" type="search" placeholder="Search models..." autocomplete="off"/><div id="model-options" role="listbox"></div></div>
+    <span id="status"></span>
+  </form>
+</div>
+<div id="sessions" aria-live="polite"></div>
