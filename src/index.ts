@@ -561,7 +561,12 @@ const renderSessions = () => {
     if (!element.classList.contains("copied"))
       element.querySelector(".session-summary").textContent =
         session.actionPending || element.dataset.summary;
-    element.querySelector(".session-comment").textContent = session.comment || "";
+    const comment = element.querySelector(".session-comment");
+    const accepting = session.actionPending === "Applying approach...";
+    comment.textContent = accepting
+      ? "accepting change " + session.selectedDesign.slice("design-".length)
+      : session.comment || "";
+    comment.classList.toggle("accepting", accepting);
     element.querySelector(".session-path-prefix").textContent = slash < 0 ? "" : session.source.slice(0, slash + 1);
     element.querySelector(".session-path-file").textContent = session.source.slice(slash + 1);
     const current = sessionsElement.children[index];

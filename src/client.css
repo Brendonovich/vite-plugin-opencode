@@ -69,6 +69,7 @@ textarea::placeholder { color: #8e8995; }
 .session[data-mode="designs"][data-status="completed"] .session-dismiss { display: none; }
 .session-comment { grid-column: 1 / -1; max-height: 100px; overflow-y: auto; border-top: 1px solid #3f3a45; padding: 7px 9px; color: #dcd6e1; background: #17151b88; white-space: pre-wrap; overflow-wrap: anywhere; scrollbar-width: thin; }
 .session-comment:empty { display: none; }
+.session-comment.accepting { font-style: italic; }
 .session-prompt { display: none; position: relative; border-top: 1px solid #3f3a45; padding: 7px; background: #1d1b23; }
 .session.refining .session-prompt { display: block; }
 .session-prompt textarea { min-height: 54px; padding: 4px; font-size: 11px; line-height: 1.3; }

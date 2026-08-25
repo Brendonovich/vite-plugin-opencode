@@ -28,7 +28,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brendonovich/vite-plugin-opencode.git"
+    "url": "git+https://github.com/Brendonovich/vite-plugin-opencode.git"
   },
   "bugs": {
     "url": "https://github.com/brendonovich/vite-plugin-opencode/issues"
