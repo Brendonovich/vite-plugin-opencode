@@ -847,6 +847,9 @@ window.addEventListener("keydown", (event) => {
     setActive(!active);
   }
   if (event.key === "Escape") {
+    if (!active && !dialog.classList.contains("open") && !refiningSessionID) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
     if (modelMenu.classList.contains("open")) {
       closeModelMenu();
       textarea.focus();
