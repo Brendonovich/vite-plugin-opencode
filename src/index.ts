@@ -34,10 +34,11 @@ interface PickerPlugin {
   readonly resolveId: (id: string) => string | undefined;
   readonly load: (id: string) => string | undefined;
   readonly transformIndexHtml: {
-    readonly order: "post";
+    readonly order: "pre";
     readonly handler: () => Array<{
       readonly tag: string;
       readonly attrs: Readonly<Record<string, string>>;
+      readonly children: string;
       readonly injectTo: "body";
     }>;
   };
@@ -980,15 +981,16 @@ export const viteOpenCodePicker = (options: OpenCodePickerOptions = {}): PickerP
       return id === resolvedVirtualId ? clientModule(endpoint) : undefined;
     },
     transformIndexHtml: {
-      order: "post",
+      // Run before Vite's HTML analysis so the inline import becomes part of the
+      // module graph. A `/@id/__x00__...` script src bypasses that graph, which
+      // breaks under Vite's bundled dev mode (`experimental.bundledDev`).
+      order: "pre",
       handler() {
         return [
           {
             tag: "script",
-            attrs: {
-              type: "module",
-              src: `${endpoint.slice(0, -"__vite_opencode_picker".length)}@id/__x00__${virtualId}`,
-            },
+            attrs: { type: "module" },
+            children: `import ${JSON.stringify(virtualId)}`,
             injectTo: "body",
           },
         ];
