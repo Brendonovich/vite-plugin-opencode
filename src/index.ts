@@ -8,8 +8,8 @@ import {
   type PluginObj,
   type TransformOptions,
 } from "@babel/core";
-import { OpenCode } from "@opencode-ai/client";
-import { Service } from "@opencode-ai/client/service";
+import { OpenCode } from "@opencode/client";
+import { Service } from "@opencode/client/service";
 import { existsSync } from "node:fs";
 import { dirname, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -1548,7 +1548,7 @@ export const viteOpenCodePicker = (options: OpenCodePickerOptions = {}): PickerP
               for (const skill of promptSkills)
                 await client.session.skill({
                   sessionID: session.id,
-                  skill: skill.id,
+                  id: skill.id,
                   resume: false,
                 });
               const executionPriority =

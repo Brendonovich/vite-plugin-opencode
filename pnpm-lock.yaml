@@ -11,9 +11,9 @@ importers:
       '@babel/core':
         specifier: ^7.29.0
         version: 7.29.7
-      '@opencode-ai/client':
-        specifier: 0.0.0-beta-18050
-        version: 0.0.0-beta-18050(effect@4.0.0-rc.111)
+      '@opencode/client':
+        specifier: 2.0.8
+        version: 2.0.8(effect@4.0.0-rc.112)
     devDependencies:
       '@types/babel__core':
         specifier: ^7.20.5
@@ -143,10 +143,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@opencode-ai/client@0.0.0-beta-18050':
-    resolution: {integrity: sha512-zWZv5X23iyx+/mxwiAi18YY/VMjQofTaH7RyKMBt7KL6FmaKAWf9Q05zbQhrLX8DYJD3MOtbjBeQCGLsPUDU8g==}
+  '@opencode/client@2.0.8':
+    resolution: {integrity: sha512-JHyDdDkiKOtR/Psmai+CO+w0KQ/iObcVIYQpG2iYRrGDBOQDpK4Y/BO5tvo6TBqd4ztNYSYGrpn+ftDsf8Gvzg==}
     peerDependencies:
-      effect: 4.0.0-rc.111
+      effect: 4.0.0-rc.112
       solid-js: '>=1.9.0'
     peerDependenciesMeta:
       effect:
@@ -154,11 +154,11 @@ packages:
       solid-js:
         optional: true
 
-  '@opencode-ai/protocol@0.0.0-beta-18050':
-    resolution: {integrity: sha512-HDQMnvGp8IU0MdBRbEuydX1WQm09BZ4HJm9iSMQwzweJuQ2HNscgzHJPIH6P02BsbbtfJ8J7sZGPItrz1tWSgw==}
+  '@opencode/protocol@2.0.8':
+    resolution: {integrity: sha512-X9aCZP91brEPFig5CInMzm4HUcC/dfMvI4IOF3OCY9xBk149oGA8PFKtb+TS/OFV1J37Wp+Pwb6HBANL37pMZQ==}
 
-  '@opencode-ai/schema@0.0.0-beta-18050':
-    resolution: {integrity: sha512-/D6VXaWlytTXR3IOiMLIKuPcfp7FQNUzRPm9z3K7UBFd1Bw4q/WZksaf5RVcBGz+0YRxYMc1V4D7MFlceSgtyg==}
+  '@opencode/schema@2.0.8':
+    resolution: {integrity: sha512-nZdh0zA1AGUT2Mp9s0zuWpIcQkBL6zuz52EY80Yxfk3VPq9UgMaJb3Y5bJUSaxsw6BijJm8/xosWdEz1+1votA==}
 
   '@oxc-project/types@0.146.0':
     resolution: {integrity: sha512-XC0QsnnhVe7sLIWmYmdPw7x5P0h4W8vUU3Nv1ySgWXtvCz8NizoAEpGXA0sOYoJQV2Rl13LgURAHQ5cI5ILCSA==}
@@ -303,8 +303,8 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
-  effect@4.0.0-rc.111:
-    resolution: {integrity: sha512-ASd5L58EIR0CUNueZNKKjSsyOCd+2alxOAIaTcHaqkJkPsaYSsw5Cg/cfANk5K4Jr2YsX756xvX11shzqsreWA==}
+  effect@4.0.0-rc.112:
+    resolution: {integrity: sha512-wXxwuh1Ywnv4cPRM3Wfa0vDwuOHnZ1TsTgHJkG9XgzND6inhBH9n1vBxhg3iIXOia/OrpmvVmd3lrD4vq6bF3A==}
 
   electron-to-chromium@1.5.413:
     resolution: {integrity: sha512-F1XPKvt7HVfly5WND90ec16nFsdr4g5x/cVUP3EqjeyXynupabGDqpMa84wwvuYGDnldXLBz6DLXyZXWO9TPvw==}
@@ -313,8 +313,8 @@ packages:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
     engines: {node: '>=6'}
 
-  fast-check@4.9.0:
-    resolution: {integrity: sha512-7ms6T7SybUev/PQITciI0yLM2pOSFy5zpG8Ty7tQofcVaQUvrMXp6CBwqF6fThLCLOrfBtuHAtwq6Yu4XPCllg==}
+  fast-check@4.10.1:
+    resolution: {integrity: sha512-sB5Vghiu8MyCyToHoBVGsT0baZg3sZWNIY+a6Ct2EDrQJlT4YdH6MC1BSLNe3kX1k5i5g0q1O52XFgcKK/rGHg==}
     engines: {node: '>=12.17.0'}
 
   fdir@6.5.0:
@@ -428,8 +428,8 @@ packages:
     resolution: {integrity: sha512-4kmO/MdyUIkLIvTPr8VHLil4AtoKIoniWPIEk5+CDy0xnWC84azhSFmuJ7PxZdsYtiP5kEeQsORAVIeMgxT+Hw==}
     hasBin: true
 
-  msgpackr@2.0.5:
-    resolution: {integrity: sha512-cef05H/dSYpLpqp3sj/qyZh5vhUYCalnaLO7j1yOmpsR0y/XwLVtK7r5gn+U/F7CTEfMowcGhlUQJDLcLf7jcA==}
+  msgpackr@2.1.0:
+    resolution: {integrity: sha512-p/pBCVO63CsvvpkomUnNNag6+n38rULuDA6HHe70o2gtC8ODI52foF/4ko2qQcp6OiErJXTmrZeXmsGGHsIQNQ==}
 
   nanoid@3.3.18:
     resolution: {integrity: sha512-DTg4MJbGMWkfi6VZFdNt2/caMbQy4Ou+Op/hJQvGEWcnVfoA1QA+xzRKAzw9jD6+GVOOeYr/mIcuDSdug6F6+w==}
@@ -674,22 +674,22 @@ snapshots:
   '@msgpackr-extract/msgpackr-extract-win32-x64@3.0.4':
     optional: true
 
-  '@opencode-ai/client@0.0.0-beta-18050(effect@4.0.0-rc.111)':
+  '@opencode/client@2.0.8(effect@4.0.0-rc.112)':
     dependencies:
-      '@opencode-ai/protocol': 0.0.0-beta-18050
-      '@opencode-ai/schema': 0.0.0-beta-18050
+      '@opencode/protocol': 2.0.8
+      '@opencode/schema': 2.0.8
     optionalDependencies:
-      effect: 4.0.0-rc.111
+      effect: 4.0.0-rc.112
 
-  '@opencode-ai/protocol@0.0.0-beta-18050':
+  '@opencode/protocol@2.0.8':
     dependencies:
-      '@opencode-ai/schema': 0.0.0-beta-18050
-      effect: 4.0.0-rc.111
+      '@opencode/schema': 2.0.8
+      effect: 4.0.0-rc.112
 
-  '@opencode-ai/schema@0.0.0-beta-18050':
+  '@opencode/schema@2.0.8':
     dependencies:
       '@standard-schema/spec': 1.1.0
-      effect: 4.0.0-rc.111
+      effect: 4.0.0-rc.112
 
   '@oxc-project/types@0.146.0': {}
 
@@ -787,17 +787,16 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
-  effect@4.0.0-rc.111:
+  effect@4.0.0-rc.112:
     dependencies:
-      '@standard-schema/spec': 1.1.0
-      fast-check: 4.9.0
-      msgpackr: 2.0.5
+      fast-check: 4.10.1
+      msgpackr: 2.1.0
 
   electron-to-chromium@1.5.413: {}
 
   escalade@3.2.0: {}
 
-  fast-check@4.9.0:
+  fast-check@4.10.1:
     dependencies:
       pure-rand: 8.4.2
 
@@ -883,7 +882,7 @@ snapshots:
       '@msgpackr-extract/msgpackr-extract-win32-x64': 3.0.4
     optional: true
 
-  msgpackr@2.0.5:
+  msgpackr@2.1.0:
     optionalDependencies:
       msgpackr-extract: 3.0.4
 

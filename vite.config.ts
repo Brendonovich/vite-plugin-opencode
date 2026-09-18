@@ -11,8 +11,8 @@ export default defineConfig({
       external: [
         /^node:/,
         "@babel/core",
-        "@opencode-ai/client",
-        "@opencode-ai/client/service",
+        "@opencode/client",
+        "@opencode/client/service",
         "vite",
       ],
     },
