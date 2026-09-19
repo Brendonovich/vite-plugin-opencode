@@ -231,6 +231,17 @@ const describe = (element) => ({
   text: primaryText(element),
   url: location.href,
 });
+const sourceContext = (element) => {
+  const context = [];
+  const seen = new Set();
+  for (let current = element; current && context.length < 8; current = current.parentElement) {
+    const source = current.getAttribute("data-opencode-picker-source");
+    if (!source || seen.has(source)) continue;
+    seen.add(source);
+    context.push({ source, element: describe(current) });
+  }
+  return context;
+};
 const setActive = (value) => {
   active = value;
   document.documentElement.classList.toggle("vite-opencode-picker-active", value);
@@ -888,7 +899,7 @@ window.addEventListener("pointerdown", (event) => {
     console.warn("OpenCode picker: no source marker found for selected element");
     return;
   }
-  selected = { source, element: describe(event.target) };
+  selected = { source, element: describe(event.target), context: sourceContext(event.target) };
   selectedElement = event.target;
   setActive(false);
   highlight(event.target);
@@ -1514,13 +1525,82 @@ export const viteOpenCodePicker = (options: OpenCodePickerOptions = {}): PickerP
                 null,
                 2,
               );
+              const surroundingContext =
+                "context" in input && Array.isArray(input.context)
+                  ? input.context
+                      .slice(0, 8)
+                      .flatMap((entry, index) => {
+                        if (
+                          typeof entry !== "object" ||
+                          entry === null ||
+                          !("source" in entry) ||
+                          typeof entry.source !== "string"
+                        )
+                          return [];
+                        const contextElement =
+                          "element" in entry &&
+                          typeof entry.element === "object" &&
+                          entry.element !== null
+                            ? entry.element
+                            : {};
+                        return [
+                          {
+                            relationship: index === 0 ? "selected element" : `DOM ancestor ${index}`,
+                            source: entry.source,
+                            tag:
+                              "tag" in contextElement && typeof contextElement.tag === "string"
+                                ? contextElement.tag
+                                : undefined,
+                            description:
+                              "description" in contextElement &&
+                              typeof contextElement.description === "string"
+                                ? contextElement.description
+                                : undefined,
+                            text:
+                              "text" in contextElement && typeof contextElement.text === "string"
+                                ? contextElement.text
+                                : undefined,
+                          },
+                        ];
+                      })
+                  : [];
+              const surroundingContextDescription =
+                surroundingContext.length === 0
+                  ? "No additional ancestor source context was captured."
+                  : JSON.stringify(surroundingContext, null, 2);
               const match = /^(.*):(\d+)$/.exec(source);
-              if (match === null || match[1] === undefined)
+              if (match === null || match[1] === undefined || match[2] === undefined)
                 throw new Error("Invalid source marker");
               const sourcePath = match[1];
+              const sourceLine = match[2];
               const file = resolve(workspaceRoot, sourcePath);
               if (!file.startsWith(`${workspaceRoot}${sep}`) || !existsSync(file))
                 throw new Error("The selected source file could not be resolved");
+              const contextFiles = new Map<string, { path: string; file: string; lines: string[] }>([
+                [sourcePath, { path: sourcePath, file, lines: [sourceLine] }],
+              ]);
+              for (const entry of surroundingContext) {
+                const contextMatch = /^(.*):(\d+)$/.exec(entry.source);
+                if (
+                  contextMatch === null ||
+                  contextMatch[1] === undefined ||
+                  contextMatch[2] === undefined
+                )
+                  continue;
+                const contextPath = contextMatch[1];
+                const contextLine = contextMatch[2];
+                const contextFile = resolve(workspaceRoot, contextPath);
+                if (!contextFile.startsWith(`${workspaceRoot}${sep}`) || !existsSync(contextFile))
+                  continue;
+                const existing = contextFiles.get(contextPath);
+                if (existing === undefined)
+                  contextFiles.set(contextPath, {
+                    path: contextPath,
+                    file: contextFile,
+                    lines: [contextLine],
+                  });
+                else if (!existing.lines.includes(contextLine)) existing.lines.push(contextLine);
+              }
 
               const service = await Service.discover();
               if (service === undefined)
@@ -1553,10 +1633,12 @@ export const viteOpenCodePicker = (options: OpenCodePickerOptions = {}): PickerP
                 });
               const executionPriority =
                 "Minimize time to completion: make the focused change first and defer time-consuming verification such as full typechecks, builds, or broad test suites until the implementation is complete. Run the necessary final checks once at the end; use earlier targeted checks only when needed to unblock the implementation.";
+              const scopeGuidance =
+                "The selected element is the interaction anchor, but it is not necessarily the source file that should be edited. Use the ordered source context (selected element first, then DOM ancestors moving outward) to inspect how the element is used within its parent components and page layout before choosing the implementation site. In particular, when the selected element is a shared primitive such as a Button or Input and the feedback concerns its position, spacing, grouping, or page-specific behavior, prefer changing the nearest owning usage, wrapper, or layout component rather than the shared primitive. Change the shared component itself only when the feedback clearly applies to its reusable appearance or behavior everywhere. The ancestor context helps identify ownership; it does not expand the request to redesign those ancestors.";
               const prompt =
                 mode === "designs"
-                  ? `The selected DOM element boundary is the authoritative target. Address the selected element or container as a whole; headings and other descendants listed below are context, not automatically the sole target. If feedback concerns copy in a container, consider all notable copy in that selected container rather than changing only its heading.\n\nPreserve the current implementation exactly as the original option, then address this exact UI feedback in three meaningfully distinct, narrowly scoped ways. Implement three alternatives that are each observably and materially different from the original and from one another; an unchanged or near-identical implementation never counts as an alternative. Match the kind of variation to the request: if the feedback is about copy, provide three genuinely different wording approaches without redesigning unrelated visuals; if it is about behavior, provide three distinct interactions; use visual alternatives only when the feedback is visual. Do not broaden the task beyond the comment. Do not add any switcher, Accept, Apply, or Finalize UI; the Vite plugin provides that UI. Default to original. Add a browser listener for vite-opencode-picker:design-change, ignore events whose detail.sessionID is not ${JSON.stringify(session.id)}, and switch the rendered implementation according to detail.design: original, design-1, design-2, or design-3. The original must reproduce the pre-change behavior and appearance exactly. Keep the listener, original, and all three alternatives until a follow-up message identifies the selected approach. Ensure the app remains usable while the plugin switches among variants.\n\n${executionPriority}\n\nFeedback: ${comment}\nSelected element: ${selectedDescription}\nSelected content overview: ${selectedContent}\nSource: ${source}\nSelected element metadata: ${selectedMetadata}`
-                  : `Implement this UI feedback for the selected DOM element. The selected DOM element boundary is the authoritative target: address the selected element or container as a whole. Headings and other descendants listed below are context, not automatically the sole target. If feedback concerns copy in a container, consider all notable copy in that selected container rather than changing only its heading.\n\n${executionPriority}\n\nFeedback: ${comment}\nSelected element: ${selectedDescription}\nSelected content overview: ${selectedContent}\nSource: ${source}\nSelected element metadata: ${selectedMetadata}`;
+                  ? `The selected DOM element boundary is the authoritative interaction target. Address the selected element or container as a whole; headings and other descendants listed below are context, not automatically the sole target. If feedback concerns copy in a container, consider all notable copy in that selected container rather than changing only its heading. ${scopeGuidance}\n\nPreserve the current implementation exactly as the original option, then address this exact UI feedback in three meaningfully distinct, narrowly scoped ways. Implement three alternatives that are each observably and materially different from the original and from one another; an unchanged or near-identical implementation never counts as an alternative. Match the kind of variation to the request: if the feedback is about copy, provide three genuinely different wording approaches without redesigning unrelated visuals; if it is about behavior, provide three distinct interactions; use visual alternatives only when the feedback is visual. Do not broaden the task beyond the comment. Do not add any switcher, Accept, Apply, or Finalize UI; the Vite plugin provides that UI. Default to original. Add a browser listener for vite-opencode-picker:design-change, ignore events whose detail.sessionID is not ${JSON.stringify(session.id)}, and switch the rendered implementation according to detail.design: original, design-1, design-2, or design-3. The original must reproduce the pre-change behavior and appearance exactly. Keep the listener, original, and all three alternatives until a follow-up message identifies the selected approach. Ensure the app remains usable while the plugin switches among variants.\n\n${executionPriority}\n\nFeedback: ${comment}\nSelected element: ${selectedDescription}\nSelected content overview: ${selectedContent}\nSelected source: ${source}\nSelected element metadata: ${selectedMetadata}\nOrdered source context (selected element outward): ${surroundingContextDescription}`
+                  : `Implement this UI feedback for the selected DOM element. The selected DOM element boundary is the authoritative interaction target: address the selected element or container as a whole. Headings and other descendants listed below are context, not automatically the sole target. If feedback concerns copy in a container, consider all notable copy in that selected container rather than changing only its heading. ${scopeGuidance}\n\n${executionPriority}\n\nFeedback: ${comment}\nSelected element: ${selectedDescription}\nSelected content overview: ${selectedContent}\nSelected source: ${source}\nSelected element metadata: ${selectedMetadata}\nOrdered source context (selected element outward): ${surroundingContextDescription}`;
               sessions.set(session.id, {
                 id: session.id,
                 source,
@@ -1572,13 +1654,14 @@ export const viteOpenCodePicker = (options: OpenCodePickerOptions = {}): PickerP
                     sessionID: session.id,
                     text: prompt,
                     skills: promptSkills,
-                    files: [
-                      {
-                        uri: pathToFileURL(file).href,
-                        name: sourcePath,
-                        description: `Source file for the selected element at line ${match[2]}`,
-                      },
-                    ],
+                    files: [...contextFiles.values()].map((contextFile, index) => ({
+                      uri: pathToFileURL(contextFile.file).href,
+                      name: contextFile.path,
+                      description:
+                        index === 0
+                          ? `Source file for the selected element at line ${contextFile.lines.join(", ")}`
+                          : `Source context for the selected element and its ancestors at lines ${contextFile.lines.join(", ")}`,
+                    })),
                   });
                   await client.session.wait({ sessionID: session.id });
                   const finished = await client.session.get({ sessionID: session.id });

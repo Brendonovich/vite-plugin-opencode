@@ -4,8 +4,8 @@ Select elements in a Vite app and send source-aware UI feedback directly to
 [OpenCode](https://opencode.ai/).
 
 The plugin runs only during development. It adds source markers to JSX and TSX,
-provides an in-browser element picker, and creates OpenCode sessions scoped to
-the selected source file.
+provides an in-browser element picker, and creates OpenCode sessions with the
+selected source plus a bounded trail of its surrounding DOM and layout sources.
 
 ## Install
 
